@@ -1,0 +1,476 @@
+/* =========================================
+   1. БАЗОВІ НАЛАШТУВАННЯ ТА ЗМІННІ
+========================================= */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #f5f5f7;
+    --text-color: #1d1d1f;
+    --grid-color: rgba(0, 0, 0, 0.05);
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --btn-bg: rgba(0, 0, 0, 0.05);
+    --btn-hover: rgba(0, 0, 0, 0.1);
+    --primary-color: #007aff;
+    --danger-color: #ff3b30;
+}
+
+[data-theme="dark"] {
+    --bg-color: #1c1c1e;
+    --text-color: #f5f5f7;
+    --grid-color: rgba(255, 255, 255, 0.05);
+    --glass-bg: rgba(30, 30, 30, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --btn-bg: rgba(255, 255, 255, 0.1);
+    --btn-hover: rgba(255, 255, 255, 0.2);
+}
+
+body {
+    display: block;
+    margin: 0;
+    font-family: 'Inter', 'San Francisco', system-ui, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.4s ease, color 0.4s ease;
+    
+    background-image: 
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 25px 25px;
+    background-position: center top;
+    
+    position: relative;
+    overflow-x: hidden;
+}
+
+.container {
+    display: block;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* =========================================
+   2. ШАПКА ТА ОСТРІВЕЦЬ ПРИВІТАННЯ
+========================================= */
+.header {
+    display: block;
+    padding: 40px 0 15px 0;
+    position: relative; 
+    overflow: hidden;
+}
+
+.header .container {
+    position: relative;
+    z-index: 2; 
+}
+
+.scrolling-banner-container {
+    position: absolute;
+    top: 110px; 
+    left: 0;
+    width: 100%;
+    z-index: 0; 
+    pointer-events: none; 
+}
+
+.scrolling-banner {
+    display: flex;
+    gap: 70px; 
+    width: max-content;
+    animation: scrollLeft 45s linear infinite; 
+    opacity: 0.25; 
+}
+
+.scrolling-icon {
+    width: 60px; 
+    height: 60px;
+    object-fit: contain;
+    filter: blur(1px); 
+}
+
+@keyframes scrollLeft {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } 
+}
+
+.header-logo {
+    display: inline-block;
+    width: 200px;
+    aspect-ratio: 10 / 10; 
+    object-fit: cover;
+    border-radius: 17px; 
+    margin-bottom: 17px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.header-logo:hover {
+    transform: scale(1.05);
+}
+
+.footer {
+    display: block;
+    padding: 40px 0;
+}
+
+/* --- ІДЕАЛЬНЕ ЦЕНТРУВАННЯ ДЛЯ ДОДАТКОВИХ СТОРІНОК --- */
+.header-subpage .container {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Вибудовуємо елементи зверху вниз */
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.header-subpage h1 {
+    text-align: center;
+    margin: 0;
+    width: 100%;
+}
+
+.header-subpage .btn-back {
+    position: absolute; /* Відв'язуємо кнопку, щоб вона не заважала симетрії */
+    left: 20px;
+    top: 20px;
+    margin: 0;
+}
+
+.header-subpage .header-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.block-section {
+    display: block;
+    margin-bottom: 50px;
+}
+
+/* --- СТИЛІЗАЦІЯ БЛОКУ ПРИВІТАННЯ (ОСТРІВЕЦЬ) --- */
+.welcome-block {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.welcome-card {
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    
+    /* Примусове центрування всього всередині */
+    text-align: center !important; 
+}
+
+.welcome-card h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center !important;
+}
+
+.welcome-card p {
+    margin-bottom: 25px;
+    line-height: 1.6;
+    text-align: center !important;
+}
+
+.welcome-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* =========================================
+   3. КОНТЕЙНЕР ДЛЯ ПЛИТКИ
+========================================= */
+.grid-container {
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* =========================================
+   4. КАРТКИ (ІГРИ ТА ГАЙДИ) + ФІКС IPHONE
+========================================= */
+.card {
+    width: 100%;
+    margin: 0; 
+    text-align: left; /* Текст ігор буде зліва, як треба */
+    
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 24px;
+    
+    /* --- ХАРДВЕРНЕ ПРИСКОРЕННЯ ДЛЯ IPHONE (АНТИ-БЛИМАННЯ) --- */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+    
+    /* Замість 'all' анімуємо тільки те, що реально змінюється */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    -webkit-transform: scale(1.03) translate3d(0, 0, 0);
+    transform: scale(1.03) translate3d(0, 0, 0);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.card img {
+    border-radius: 12px;
+    margin-bottom: 15px;
+    display: block;
+    
+    /* Анти-блимання для самих картинок */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.card .game-img { width: 100%; height: auto; }
+.card .guide-img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+
+/* =========================================
+   5. КНОПКИ
+========================================= */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 20px;
+    background: var(--btn-bg);
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    font-family: inherit;
+}
+
+.btn:hover { background: var(--btn-hover); }
+.btn-primary { background: var(--primary-color); color: white; }
+.btn-primary:hover { background: #005bb5; }
+.btn-danger { background: var(--danger-color); color: white; }
+.btn-danger:hover { background: #c62d26; }
+
+#theme-toggle {
+    width: 140px;
+    text-align: center;
+}
+
+.floating-scroll-btn {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    z-index: 999;
+    padding: 12px 22px;
+    border-radius: 25px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    color: var(--text-color);
+    font-weight: 600;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    margin: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.floating-scroll-btn:hover {
+    transform: translateY(-3px);
+    background: var(--btn-hover);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================
+   6. ФОНОВА АНІМАЦІЯ ХАОТИЧНИХ ІКОНОК
+========================================= */
+.bg-animation-container {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.floating-shape {
+    position: absolute;
+    bottom: -100px;
+    opacity: 0.15;
+    filter: blur(2px);
+    -webkit-filter: blur(2px);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.15; }
+    90% { opacity: 0.15; }
+    100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+/* =========================================
+   7. АДАПТИВНІСТЬ ДЛЯ ЕКРАНІВ (МОБІЛЬНИЙ СТЕК)
+========================================= */
+@media (max-width: 768px) {
+    .header-subpage .btn-back {
+        position: static; /* На мобілці кнопка повертається у вертикальний ряд */
+    }
+    .floating-scroll-btn {
+        right: 15px;
+        bottom: 15px;
+        padding: 10px 18px;
+    }
+    .welcome-card { padding: 20px; }
+}
+
+/* =========================================
+   8. ЗАВАНТАЖУВАЛЬНИЙ ЕКРАН (Адаптивний hShop)
+========================================= */
+.page-loader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+    background: var(--bg-color); 
+    overflow: hidden;
+}
+
+.page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.hshop-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+    perspective: 800px; 
+}
+
+.hshop-wall {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 60%;
+    background: radial-gradient(circle at center, transparent 0%, var(--btn-hover) 150%);
+}
+
+.hshop-floor {
+    position: absolute;
+    bottom: -10%; left: -50%; width: 200%; height: 50%;
+    background: linear-gradient(to top, var(--btn-hover), transparent);
+    background-image: 
+        linear-gradient(var(--grid-color) 2px, transparent 2px),
+        linear-gradient(90deg, var(--grid-color) 2px, transparent 2px);
+    background-size: 60px 60px;
+    transform: rotateX(75deg); 
+    transform-origin: top center;
+}
+
+.hshop-line {
+    position: absolute;
+    top: 40%; left: 0; width: 100%; height: 3px;
+    background: var(--glass-border); 
+    z-index: 2;
+}
+
+.hshop-bag-container {
+    position: absolute;
+    top: 42%; left: 50%;
+    transform: translateX(-50%);
+    z-index: 4; 
+    animation: bagFloat 3s ease-in-out infinite;
+}
+
+.hshop-bag-img {
+    width: 120px; height: auto;
+    filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.2)); 
+}
+
+@keyframes bagFloat {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, -8px); }
+}
+
+.hshop-squares { position: absolute; top: 40%; left: 50%; width: 0; height: 0; z-index: 3; }
+
+.hshop-square {
+    position: absolute; width: 50px; height: 50px; border-radius: 12px; top: -48px; 
+    box-shadow: inset 0 -3px 8px rgba(0,0,0,0.2), 0 8px 15px rgba(0,0,0,0.15);
+    animation: slideAndDrop 2.8s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+    opacity: 0;
+}
+
+.sq-orange { background: linear-gradient(135deg, #ff9500, #ff5e3a); animation-delay: 0s; }
+.sq-green  { background: linear-gradient(135deg, #4cd964, #34aadc); animation-delay: 0.7s; }
+.sq-purple { background: linear-gradient(135deg, #c644fc, #5856d6); animation-delay: 1.4s; }
+.sq-blue   { background: linear-gradient(135deg, #5ac8fa, #007aff); animation-delay: 2.1s; }
+
+@keyframes slideAndDrop {
+    0% { transform: translateX(40vw); opacity: 0; }
+    10% { opacity: 1; }
+    40% { transform: translateX(-25px); opacity: 1; }
+    45% { transform: translateX(-25px); opacity: 1; }
+    55% { transform: translate(-25px, 80px) scale(0.3); opacity: 0; }
+    100% { transform: translate(-25px, 80px) scale(0); opacity: 0; }
+}
+
+.hshop-text {
+    position: absolute; bottom: 15%; z-index: 5;
+    color: var(--text-color); font-size: 1.2rem; font-weight: 700;
+    background: var(--glass-bg); padding: 8px 20px; border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+
+/* =========================================
+   9. СЕКРЕТНІ ТЕМИ (ПАСХАЛКА)
+========================================= */
+[data-theme="magenta"] { --bg-color: #ffe0ef; --primary-color: #ff0055; --text-color: #1d1d1f; --glass-bg: rgba(255, 255, 255, 0.7); }
+[data-theme="lime"]    { --bg-color: #f2ffcc; --primary-color: #9deb00; --text-color: #1d1d1f; --glass-bg: rgba(255, 255, 255, 0.7); }
+[data-theme="green"]   { --bg-color: #ccffdf; --primary-color: #00d960; --text-color: #1d1d1f; --glass-bg: rgba(255, 255, 255, 0.7); }
+[data-theme="skyblue"] { --bg-color: #ccf0ff; --primary-color: #00bfff; --text-color: #1d1d1f; --glass-bg: rgba(255, 255, 255, 0.7); }
+[data-theme="purple"]  { --bg-color: #f0ccff; --primary-color: #b000ff; --text-color: #1d1d1f; --glass-bg: rgba(255, 255, 255, 0.7); }
+[data-theme="orange"]  { --bg-color: #ffe6cc; --primary-color: #ff6a00; --text-color: #1d1d1f; --glass-bg: rgba(255, 255, 255, 0.7); }
+
+.color-theme-btn {
+    width: 100px; 
+    white-space: nowrap; text-align: center; justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, filter 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3); font-weight: 600;
+}
+.color-theme-btn:hover {
+    transform: scale(1.1); filter: brightness(1.1); box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
