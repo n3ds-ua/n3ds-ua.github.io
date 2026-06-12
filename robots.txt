@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yoursite.com/sitemap.xml
+Sitemap: https://n3ds-ua.github.io/sitemap.xml
